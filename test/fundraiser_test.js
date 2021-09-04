@@ -112,7 +112,7 @@ contract("Fundraiser", accounts => {
       const diff = newTotalDonations - currentTotalDonations;
 
       assert.equal(diff, value, "difference should match the donation value");
-    })
+    });
 
     it("increases donationsCount", async () => {
       const currentDonationsCount = await fundraiser.donationsCount();
@@ -122,6 +122,14 @@ contract("Fundraiser", accounts => {
       const diff = newDonationsCount - currentDonationsCount;
 
       assert.equal(diff, 1, "donationCount should increment by 1");
-    })
+    });
+
+    it("emits the DonationRecieved event", async () => {
+      const tx = await fundraiser.donate({from: donor, value});
+      const expectedEvent = "DonationReceived";
+      const actualEvent = tx.logs[0].event;
+
+      assert.equal(actualEvent, expectedEvent, "events should match");
+    });
   });
 });
