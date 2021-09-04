@@ -7,6 +7,7 @@ import "openzeppelin-solidity/contracts/utils/math/SafeMath.sol";
 contract Fundraiser is Ownable {
 
     event DonationReceived(address indexed donor, uint256 value);
+    event Withdraw(uint256 amount);
 
     using SafeMath for uint256;
 
@@ -77,5 +78,12 @@ contract Fundraiser is Ownable {
         }
 
         return (values, dates);
+    }
+
+    function withdraw() public onlyOwner {
+        uint256 balance = address(this).balance;
+        beneficiary.transfer(balance);
+
+        emit Withdraw(balance);
     }
 }
