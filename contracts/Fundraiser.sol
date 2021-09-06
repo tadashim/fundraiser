@@ -86,4 +86,9 @@ contract Fundraiser is Ownable {
 
         emit Withdraw(balance);
     }
+
+    fallback () external payable {
+        totalDonations = totalDonations.add(msg.value);
+        donationsCount++;
+    }
 }
